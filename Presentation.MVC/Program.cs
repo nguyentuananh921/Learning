@@ -1,18 +1,21 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.Identity.Identity;
 
+using Infrastructure.Identity.Identity;
+using Infrastructure.Persistence;
 using Infrastructure.Identity;
 using Infrastructure.Share;
 using Infrastructure.Identity.Seed;
 using Infrastructure.Identity.Context;
+using Infrastructure.Persistence.Contexts;
+using Infrastructure.Persistence.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
 #region Service from other layer
     builder.Services.ConfigureInfrastructureShareServices(builder.Configuration);
     builder.Services.ConfigureIdentityServices(builder.Configuration);
-//builder.Services.ConfigurePersistenceServices(builder.Configuration);
+    builder.Services.ConfigurePersistenceServices(builder.Configuration);
 #endregion
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -53,11 +56,24 @@ app.MapRazorPages();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+    #region Seed Identity Data
     var context = services.GetRequiredService<IdentityDbContext>();
     context.Database.Migrate();
     var userMgr = services.GetRequiredService<UserManager<ApplicationUser>>();
     var roleMgr = services.GetRequiredService<RoleManager<IdentityRole>>();
     SeedIdentityData.Initialize(context, userMgr, roleMgr).Wait();
+    #endregion
+    #region Seed Data
+    //var dataContext= services.GetRequiredService<ApplicationDbContext>();
+    //await SeedDeveloperData.InitializeDeveloper(dataContext);
+
+    //var initialiser = services.GetRequiredService<ApplicationDbContextInitialiser>();
+    //await SeedBookData.InitializeBookCategoriesData(requireservie);
+    //await SeedBookData.InitializeBookData(requireservie);
+    //
+    
+    #endregion
+
 }
 #endregion
 

@@ -1,51 +1,37 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Core.Application.Interfaces.Infrastructure.Persistence.Repository.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-namespace Presentation.MVC.Areas.Admin.Controllers
+namespace Presentation.MVC.Controllers
 {
-    /*
-     * https://codewithmukesh.com/blog/user-management-in-aspnet-core-mvc/
-     */
-    [Area("Admin")]
-    public class RoleController : Controller
+    public class DeveloperController : Controller
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
-        public RoleController(RoleManager<IdentityRole> roleManager)
+        private readonly IUnitOfWork _unitOfWork;
+        public DeveloperController(IUnitOfWork unitOfWork)
         {
-            _roleManager = roleManager;
+            _unitOfWork = unitOfWork;
+        }
+        // GET: DeveloperController
+        public ActionResult Index()
+        {
+            var developers= _unitOfWork.Developers.GetAllAsync();
+
+            return View(developers);
         }
 
-        // GET: RoleController
-        public async Task<ActionResult> Index()
-        {
-            var roles = await _roleManager.Roles.ToListAsync();    
-            return View(roles);
-        }
-        [HttpPost]
-        public async Task<IActionResult> AddRole(string roleName)
-        {
-            if (roleName != null)
-            {
-                await _roleManager.CreateAsync(new IdentityRole(roleName.Trim()));
-            }
-            return RedirectToAction("Index");
-        }
-
-        // GET: RoleController/Details/5
+        // GET: DeveloperController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: RoleController/Create
+        // GET: DeveloperController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: RoleController/Create
+        // POST: DeveloperController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -60,13 +46,13 @@ namespace Presentation.MVC.Areas.Admin.Controllers
             }
         }
 
-        // GET: RoleController/Edit/5
+        // GET: DeveloperController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: RoleController/Edit/5
+        // POST: DeveloperController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -81,13 +67,13 @@ namespace Presentation.MVC.Areas.Admin.Controllers
             }
         }
 
-        // GET: RoleController/Delete/5
+        // GET: DeveloperController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: RoleController/Delete/5
+        // POST: DeveloperController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

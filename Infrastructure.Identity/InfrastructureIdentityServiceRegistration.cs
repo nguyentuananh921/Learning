@@ -68,7 +68,5 @@ namespace Infrastructure.Identity
             //    });
             return services;
         }
-
-
     }
 }
