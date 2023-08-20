@@ -12,7 +12,7 @@ namespace Infrastructure.Persistence.Configurations
     public class BookCategoryConfiguration : IEntityTypeConfiguration<BookCategory>
     {
         public void Configure(EntityTypeBuilder<BookCategory> builder)
-        {
+        {            
             builder.ToTable("BookCategories", "Book");
             builder.Property(e => e.Id).ValueGeneratedNever().HasColumnName("Id");
         }

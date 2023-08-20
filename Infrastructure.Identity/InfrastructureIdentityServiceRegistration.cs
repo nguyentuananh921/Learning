@@ -25,12 +25,13 @@ namespace Infrastructure.Identity
             #region Identity UI
             /*https://www.youtube.com/watch?v=AopeJjkcRvU&t=34s
             Time:8:05
-             
-            services.ConfigureApplicationCookie(options => {
+             */
+            services.ConfigureApplicationCookie(options =>
+            {
                 options.LoginPath = $"/Identity/Account/Pages/Login";
                 options.LogoutPath = $"/Identity/Account/Pages/Logout";
                 options.AccessDeniedPath = $"/Identity/Pages/Account/AccessDenied";
-            });*/
+            });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie(options =>
                     {
